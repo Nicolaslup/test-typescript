@@ -11,7 +11,7 @@ export class Test {
 }
 
 export function sortTyping<T>(DynamicClass: new (...params: any[]) => T, tab: Array<T>, key: string): Array<T> | null {
-  const obj = Object.getOwnPropertyNames(new DynamicClass());
+  const obj: Array<string> = Object.getOwnPropertyNames(new DynamicClass());
   
   let newTab: Array<T> | null = new Array<T>();
   if (obj.includes(key)) {
