@@ -1,28 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 
-export class Test {
-  name: string;
-  age: number;
-
-  constructor() {
-    this.name = '';
-    this.age = 0;
-  }
+export class Index {
+  [index: string]: any
 }
 
-export function sortTyping<T>(DynamicClass: new (...params: any[]) => T, tab: Array<T>, key: string): Array<T> | null {
-  const obj: Array<string> = Object.getOwnPropertyNames(new DynamicClass());
+export class Select {
+  id: string;
+  value: string;
+}
+
+export class Test {
+  id: string;
+  toto: number;
+}
+
+export function associativeArray<T extends Index, U>(objet: T, key: string, classValue: U): boolean {
   
-  let newTab: Array<T> | null = new Array<T>();
-  if (obj.includes(key)) {
-    newTab = tab.sort((a: T, b: T) => {
-        return a[key] - b[key];
+  if (Object.keys(objet).includes(key)) {
+    if ((typeof classValue === 'string' || 
+    typeof classValue === 'number' || 
+    typeof classValue === 'boolean') &&
+    typeof objet[key] === typeof classValue) {
+      return true
+    } else {
+      const keyOfClass: Array<string> = Object.keys(classValue);
+      if (typeof objet[key] !== 'string' &&
+      typeof objet[key] !== 'number' && 
+      typeof objet[key] !== 'boolean') {
+        for (const prop in objet[key]) {
+            for (let i = 0; i < keyOfClass.length; i++) {
+                if (prop === keyOfClass[i]) {
+                    break;
+                } else {
+                    if (keyOfClass.length === i + 1) {
+                        return false;
+                    }
+                }
+            }
+            continue;
+        }
+        return true;
+      } else {
+        return false;
       }
-    )
+    }
   } else {
-    newTab = null;
+    return false
   }
-  return newTab
 }
 
 @Component({
@@ -32,16 +56,12 @@ export function sortTyping<T>(DynamicClass: new (...params: any[]) => T, tab: Ar
 })
 export class AppComponent implements OnInit {
 
-  public tab2: Array<Test>;
-  ngOnInit():void {
-    const tab: Array<Test> = new Array<Test>(
-      {name: 'john', age: 18},
-      {name: 'celia', age: 20},
-      {name: 'tom', age: 16},
-      {name: 'nic', age: 21},
-    );
+  public tutu: boolean
 
-    this.tab2 = sortTyping<Test>(Test, tab, 'age')
+  ngOnInit():void {
+    this.tutu = false;
+    const test = new Test();
+    this.tutu = associativeArray<Test, string>(test, 'toto', '');
   }
   
 }
