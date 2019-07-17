@@ -11,7 +11,12 @@ export class Select {
 
 export class Test {
   id: string;
-  toto: number;
+  toto: string;
+
+  constructor() {
+    this.id = '';
+    this.toto = '';
+  }
 }
 
 export function associativeArray<T extends Index, U>(objet: T, key: string, classValue: U): boolean {
