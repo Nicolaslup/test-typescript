@@ -11,12 +11,18 @@ export class Select {
 
 export class Test {
   id: string;
-  toto: string;
+  toto: Select;
 
   constructor() {
-    this.id = '';
-    this.toto = '';
+    id: '';
+    toto: new Select();
   }
+}
+
+export function affectValueToassociativeArray<T extends Index, U>(objet: T, key: string, classValue: U, newValue: U) {
+  if (Object.keys(objet).includes(key)) {
+        objet[key]=newValue;
+    }
 }
 
 export function associativeArray<T extends Index, U>(objet: T, key: string, classValue: U): boolean {
@@ -29,6 +35,7 @@ export function associativeArray<T extends Index, U>(objet: T, key: string, clas
       return true
     } else {
       const keyOfClass: Array<string> = Object.keys(classValue);
+
       if (typeof objet[key] !== 'string' &&
       typeof objet[key] !== 'number' && 
       typeof objet[key] !== 'boolean') {
@@ -54,6 +61,8 @@ export function associativeArray<T extends Index, U>(objet: T, key: string, clas
   }
 }
 
+
+
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -67,6 +76,9 @@ export class AppComponent implements OnInit {
     this.tutu = false;
     const test = new Test();
     this.tutu = associativeArray<Test, string>(test, 'toto', '');
+    // test.affectValueToassociativeArray<Select>( 'toto', new Select(), {id: '', value: 'test'})
+    affectValueToassociativeArray<Test, Select>(test, 'toto', new Select(), {id: '', value: 'test'})
+    console.log(test)
   }
   
 }
